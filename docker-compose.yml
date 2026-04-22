@@ -1,22 +1,34 @@
-version: '3.8'
+version: "3.8"
 
 services:
-  backend:
-    build: ./server
-    ports:
-      - "3001:3001"
-    volumes:
-      - ./server:/app
-      - /app/node_modules
-    environment:
-      - DATABASE_PATH=/app/data/database.sqlite
-      - PORT=3001
-    depends_on:
-      - db-init
+    postgres:
+        image: postgres:15
+        environment:
+            - POSTGRES_USER=pguser
+            - POSTGRES_PASSWORD=pgpassword
+            - POSTGRES_DB=childrendb
+        volumes:
+            - pgdata:/var/lib/postgresql/data
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U pguser"]
+            interval: 5s
+            timeout: 5s
+            retries: 5
 
-  # Container only used to initialize the database directory with proper permissions
-  db-init:
-    image: alpine
-    command: sh -c "mkdir -p /app/data && chmod 777 /app/data"
-    volumes:
-      - ./server/data:/app/data
+    backend:
+        build: ./server
+        ports:
+            - "3001:3001"
+        volumes:
+            - ./server:/app
+            - node_modules:/app/node_modules
+            - ./server/data:/app/data
+        environment:
+            - DATABASE_URL=postgresql://pguser:pgpassword@postgres:5432/childrendb
+            - PORT=3001
+        depends_on:
+            - postgres
+
+volumes:
+    node_modules:
+    pgdata:

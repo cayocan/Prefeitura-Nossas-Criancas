@@ -2,11 +2,17 @@ FROM node:20-slim
 
 WORKDIR /app
 
-# Install global dependencies if necessary
-RUN apt-get update && apt-get install -y python3 make g++
+# Install build dependencies for native modules
+RUN apt-get update && apt-get install -y --no-install-recommends \
+	build-essential \
+	python3 \
+	pkg-config \
+	ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY package*.json ./
-RUN npm install
+# Install node dependencies
+RUN npm install --unsafe-perm --loglevel=warn
 
 COPY . .
 
