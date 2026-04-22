@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./server
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+    environment:
+      - DATABASE_PATH=/app/data/database.sqlite
+      - PORT=3001
+    depends_on:
+      - db-init
+
+  # Container only used to initialize the database directory with proper permissions
+  db-init:
+    image: alpine
+    command: sh -c "mkdir -p /app/data && chmod 777 /app/data"
+    volumes:
+      - ./server/data:/app/data

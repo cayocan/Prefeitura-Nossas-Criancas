@@ -1,0 +1,583 @@
+[
+    {
+        "id": "c001",
+        "nome": "Ana Clara Mendes",
+        "data_nascimento": "2020-03-15",
+        "bairro": "Rocinha",
+        "responsavel": "Maria Mendes",
+        "saude": {
+            "ultima_consulta": "2025-11-10",
+            "vacinas_em_dia": true,
+            "alertas": []
+        },
+        "educacao": {
+            "escola": "CIEP 305 Guilherme Bryan",
+            "frequencia_percent": 61,
+            "alertas": ["frequencia_baixa"]
+        },
+        "assistencia_social": {
+            "cad_unico": true,
+            "beneficio_ativo": true,
+            "alertas": []
+        },
+        "revisado": false,
+        "revisado_por": null,
+        "revisado_em": null
+    },
+    {
+        "id": "c002",
+        "nome": "Lucas Ferreira dos Santos",
+        "data_nascimento": "2019-07-22",
+        "bairro": "Maré",
+        "responsavel": "Joana Santos",
+        "saude": {
+            "ultima_consulta": "2024-04-03",
+            "vacinas_em_dia": false,
+            "alertas": ["vacinas_atrasadas", "consulta_atrasada"]
+        },
+        "educacao": {
+            "escola": "EM Professora Elzita",
+            "frequencia_percent": 88,
+            "alertas": []
+        },
+        "assistencia_social": {
+            "cad_unico": true,
+            "beneficio_ativo": false,
+            "alertas": ["beneficio_suspenso"]
+        },
+        "revisado": false,
+        "revisado_por": null,
+        "revisado_em": null
+    },
+    {
+        "id": "c003",
+        "nome": "Sofia Lima Carvalho",
+        "data_nascimento": "2021-11-08",
+        "bairro": "Jacarezinho",
+        "responsavel": "Fernanda Carvalho",
+        "saude": {
+            "ultima_consulta": "2026-01-22",
+            "vacinas_em_dia": true,
+            "alertas": []
+        },
+        "educacao": null,
+        "assistencia_social": {
+            "cad_unico": false,
+            "beneficio_ativo": false,
+            "alertas": ["cadastro_ausente"]
+        },
+        "revisado": true,
+        "revisado_por": "tecnico@prefeitura.rio",
+        "revisado_em": "2026-02-10T09:14:00Z"
+    },
+    {
+        "id": "c004",
+        "nome": "Gabriel Rocha Nunes",
+        "data_nascimento": "2018-05-30",
+        "bairro": "Complexo do Alemão",
+        "responsavel": "Patricia Nunes",
+        "saude": null,
+        "educacao": {
+            "escola": "CIEP 208 Paulo Sarasate",
+            "frequencia_percent": 45,
+            "alertas": ["frequencia_baixa"]
+        },
+        "assistencia_social": {
+            "cad_unico": true,
+            "beneficio_ativo": true,
+            "alertas": []
+        },
+        "revisado": false,
+        "revisado_por": null,
+        "revisado_em": null
+    },
+    {
+        "id": "c005",
+        "nome": "Isabela Moura Pinto",
+        "data_nascimento": "2022-02-14",
+        "bairro": "Mangueira",
+        "responsavel": "Cláudia Pinto",
+        "saude": {
+            "ultima_consulta": "2026-03-01",
+            "vacinas_em_dia": true,
+            "alertas": []
+        },
+        "educacao": null,
+        "assistencia_social": null,
+        "revisado": false,
+        "revisado_por": null,
+        "revisado_em": null
+    },
+    {
+        "id": "c006",
+        "nome": "Mateus Oliveira Costa",
+        "data_nascimento": "2019-09-17",
+        "bairro": "Rocinha",
+        "responsavel": "Renata Costa",
+        "saude": {
+            "ultima_consulta": "2024-01-15",
+            "vacinas_em_dia": false,
+            "alertas": ["vacinas_atrasadas", "consulta_atrasada"]
+        },
+        "educacao": {
+            "escola": "CIEP 305 Guilherme Bryan",
+            "frequencia_percent": 55,
+            "alertas": ["frequencia_baixa"]
+        },
+        "assistencia_social": {
+            "cad_unico": true,
+            "beneficio_ativo": false,
+            "alertas": ["beneficio_suspenso"]
+        },
+        "revisado": false,
+        "revisado_por": null,
+        "revisado_em": null
+    },
+    {
+        "id": "c007",
+        "nome": "Larissa Andrade Teixeira",
+        "data_nascimento": "2020-12-03",
+        "bairro": "Maré",
+        "responsavel": "Sandra Teixeira",
+        "saude": {
+            "ultima_consulta": "2026-02-18",
+            "vacinas_em_dia": true,
+            "alertas": []
+        },
+        "educacao": {
+            "escola": "EM Maria José Barreto",
+            "frequencia_percent": 91,
+            "alertas": []
+        },
+        "assistencia_social": {
+            "cad_unico": true,
+            "beneficio_ativo": true,
+            "alertas": []
+        },
+        "revisado": false,
+        "revisado_por": null,
+        "revisado_em": null
+    },
+    {
+        "id": "c008",
+        "nome": "Pedro Henrique Barbosa",
+        "data_nascimento": "2017-04-20",
+        "bairro": "Jacarezinho",
+        "responsavel": "Marcos Barbosa",
+        "saude": {
+            "ultima_consulta": "2025-08-05",
+            "vacinas_em_dia": true,
+            "alertas": []
+        },
+        "educacao": {
+            "escola": "EM Rivadávia Corrêa",
+            "frequencia_percent": 73,
+            "alertas": []
+        },
+        "assistencia_social": {
+            "cad_unico": false,
+            "beneficio_ativo": false,
+            "alertas": ["cadastro_desatualizado"]
+        },
+        "revisado": true,
+        "revisado_por": "tecnico@prefeitura.rio",
+        "revisado_em": "2026-03-05T14:30:00Z"
+    },
+    {
+        "id": "c009",
+        "nome": "Beatriz Nascimento Alves",
+        "data_nascimento": "2021-06-11",
+        "bairro": "Complexo do Alemão",
+        "responsavel": "Regina Alves",
+        "saude": {
+            "ultima_consulta": "2023-11-20",
+            "vacinas_em_dia": false,
+            "alertas": ["vacinas_atrasadas", "consulta_atrasada"]
+        },
+        "educacao": null,
+        "assistencia_social": {
+            "cad_unico": true,
+            "beneficio_ativo": true,
+            "alertas": []
+        },
+        "revisado": false,
+        "revisado_por": null,
+        "revisado_em": null
+    },
+    {
+        "id": "c010",
+        "nome": "Thiago Sousa Ferreira",
+        "data_nascimento": "2018-10-25",
+        "bairro": "Mangueira",
+        "responsavel": "Luciana Ferreira",
+        "saude": {
+            "ultima_consulta": "2026-01-08",
+            "vacinas_em_dia": true,
+            "alertas": []
+        },
+        "educacao": {
+            "escola": "EM Silveira Sampaio",
+            "frequencia_percent": 84,
+            "alertas": []
+        },
+        "assistencia_social": {
+            "cad_unico": true,
+            "beneficio_ativo": true,
+            "alertas": []
+        },
+        "revisado": false,
+        "revisado_por": null,
+        "revisado_em": null
+    },
+    {
+        "id": "c011",
+        "nome": "Camila Ramos Correia",
+        "data_nascimento": "2022-08-19",
+        "bairro": "Rocinha",
+        "responsavel": "Eliane Correia",
+        "saude": {
+            "ultima_consulta": "2025-12-14",
+            "vacinas_em_dia": true,
+            "alertas": []
+        },
+        "educacao": {
+            "escola": null,
+            "frequencia_percent": null,
+            "alertas": ["matricula_pendente"]
+        },
+        "assistencia_social": {
+            "cad_unico": true,
+            "beneficio_ativo": true,
+            "alertas": []
+        },
+        "revisado": false,
+        "revisado_por": null,
+        "revisado_em": null
+    },
+    {
+        "id": "c012",
+        "nome": "Rafael Cardoso Lima",
+        "data_nascimento": "2019-01-30",
+        "bairro": "Maré",
+        "responsavel": "Adriana Lima",
+        "saude": {
+            "ultima_consulta": "2024-06-22",
+            "vacinas_em_dia": false,
+            "alertas": ["vacinas_atrasadas"]
+        },
+        "educacao": {
+            "escola": "EM Professor Ayres de Moura",
+            "frequencia_percent": 78,
+            "alertas": []
+        },
+        "assistencia_social": null,
+        "revisado": false,
+        "revisado_por": null,
+        "revisado_em": null
+    },
+    {
+        "id": "c013",
+        "nome": "Juliana Pereira Gomes",
+        "data_nascimento": "2020-05-07",
+        "bairro": "Jacarezinho",
+        "responsavel": "Tatiane Gomes",
+        "saude": {
+            "ultima_consulta": "2026-02-28",
+            "vacinas_em_dia": true,
+            "alertas": []
+        },
+        "educacao": {
+            "escola": "EM Rivadávia Corrêa",
+            "frequencia_percent": 52,
+            "alertas": ["frequencia_baixa"]
+        },
+        "assistencia_social": {
+            "cad_unico": true,
+            "beneficio_ativo": true,
+            "alertas": []
+        },
+        "revisado": true,
+        "revisado_por": "tecnico@prefeitura.rio",
+        "revisado_em": "2026-04-01T10:00:00Z"
+    },
+    {
+        "id": "c014",
+        "nome": "Vinícius Martins Souza",
+        "data_nascimento": "2017-12-09",
+        "bairro": "Complexo do Alemão",
+        "responsavel": "Rosana Souza",
+        "saude": {
+            "ultima_consulta": "2024-02-10",
+            "vacinas_em_dia": false,
+            "alertas": ["vacinas_atrasadas", "consulta_atrasada"]
+        },
+        "educacao": {
+            "escola": "CIEP 208 Paulo Sarasate",
+            "frequencia_percent": 41,
+            "alertas": ["frequencia_baixa"]
+        },
+        "assistencia_social": {
+            "cad_unico": false,
+            "beneficio_ativo": false,
+            "alertas": ["cadastro_desatualizado", "beneficio_suspenso"]
+        },
+        "revisado": false,
+        "revisado_por": null,
+        "revisado_em": null
+    },
+    {
+        "id": "c015",
+        "nome": "Amanda Xavier Torres",
+        "data_nascimento": "2021-03-28",
+        "bairro": "Mangueira",
+        "responsavel": "Mônica Torres",
+        "saude": null,
+        "educacao": null,
+        "assistencia_social": null,
+        "revisado": false,
+        "revisado_por": null,
+        "revisado_em": null
+    },
+    {
+        "id": "c016",
+        "nome": "Felipe Dias Araújo",
+        "data_nascimento": "2018-08-14",
+        "bairro": "Rocinha",
+        "responsavel": "Cristina Araújo",
+        "saude": {
+            "ultima_consulta": "2026-03-10",
+            "vacinas_em_dia": true,
+            "alertas": []
+        },
+        "educacao": {
+            "escola": "CIEP 305 Guilherme Bryan",
+            "frequencia_percent": 93,
+            "alertas": []
+        },
+        "assistencia_social": {
+            "cad_unico": true,
+            "beneficio_ativo": true,
+            "alertas": []
+        },
+        "revisado": false,
+        "revisado_por": null,
+        "revisado_em": null
+    },
+    {
+        "id": "c017",
+        "nome": "Mariana Cunha Lopes",
+        "data_nascimento": "2022-10-01",
+        "bairro": "Maré",
+        "responsavel": "Débora Lopes",
+        "saude": {
+            "ultima_consulta": "2025-09-17",
+            "vacinas_em_dia": true,
+            "alertas": []
+        },
+        "educacao": {
+            "escola": null,
+            "frequencia_percent": null,
+            "alertas": ["matricula_pendente"]
+        },
+        "assistencia_social": {
+            "cad_unico": true,
+            "beneficio_ativo": false,
+            "alertas": ["beneficio_suspenso"]
+        },
+        "revisado": false,
+        "revisado_por": null,
+        "revisado_em": null
+    },
+    {
+        "id": "c018",
+        "nome": "Davi Ribeiro Monteiro",
+        "data_nascimento": "2019-04-05",
+        "bairro": "Jacarezinho",
+        "responsavel": "Simone Monteiro",
+        "saude": {
+            "ultima_consulta": "2026-01-30",
+            "vacinas_em_dia": true,
+            "alertas": []
+        },
+        "educacao": {
+            "escola": "EM Rivadávia Corrêa",
+            "frequencia_percent": 87,
+            "alertas": []
+        },
+        "assistencia_social": {
+            "cad_unico": true,
+            "beneficio_ativo": true,
+            "alertas": []
+        },
+        "revisado": false,
+        "revisado_por": null,
+        "revisado_em": null
+    },
+    {
+        "id": "c019",
+        "nome": "Letícia Melo Pacheco",
+        "data_nascimento": "2020-07-16",
+        "bairro": "Complexo do Alemão",
+        "responsavel": "Vanessa Pacheco",
+        "saude": {
+            "ultima_consulta": "2023-09-04",
+            "vacinas_em_dia": false,
+            "alertas": ["vacinas_atrasadas", "consulta_atrasada"]
+        },
+        "educacao": {
+            "escola": "CIEP 208 Paulo Sarasate",
+            "frequencia_percent": 67,
+            "alertas": []
+        },
+        "assistencia_social": {
+            "cad_unico": true,
+            "beneficio_ativo": true,
+            "alertas": []
+        },
+        "revisado": false,
+        "revisado_por": null,
+        "revisado_em": null
+    },
+    {
+        "id": "c020",
+        "nome": "Gustavo Faria Braga",
+        "data_nascimento": "2021-09-23",
+        "bairro": "Mangueira",
+        "responsavel": "Aline Braga",
+        "saude": {
+            "ultima_consulta": "2026-02-05",
+            "vacinas_em_dia": true,
+            "alertas": []
+        },
+        "educacao": {
+            "escola": "EM Silveira Sampaio",
+            "frequencia_percent": 79,
+            "alertas": []
+        },
+        "assistencia_social": {
+            "cad_unico": false,
+            "beneficio_ativo": false,
+            "alertas": ["cadastro_desatualizado"]
+        },
+        "revisado": true,
+        "revisado_por": "tecnico@prefeitura.rio",
+        "revisado_em": "2026-03-20T16:45:00Z"
+    },
+    {
+        "id": "c021",
+        "nome": "Natália Freitas Cardoso",
+        "data_nascimento": "2018-02-27",
+        "bairro": "Rocinha",
+        "responsavel": "Iara Cardoso",
+        "saude": {
+            "ultima_consulta": "2025-10-11",
+            "vacinas_em_dia": true,
+            "alertas": []
+        },
+        "educacao": {
+            "escola": "CIEP 305 Guilherme Bryan",
+            "frequencia_percent": 58,
+            "alertas": ["frequencia_baixa"]
+        },
+        "assistencia_social": null,
+        "revisado": false,
+        "revisado_por": null,
+        "revisado_em": null
+    },
+    {
+        "id": "c022",
+        "nome": "Eduardo Peixoto Viana",
+        "data_nascimento": "2017-11-13",
+        "bairro": "Maré",
+        "responsavel": "Cintia Viana",
+        "saude": {
+            "ultima_consulta": "2026-03-15",
+            "vacinas_em_dia": true,
+            "alertas": []
+        },
+        "educacao": {
+            "escola": "EM Professor Ayres de Moura",
+            "frequencia_percent": 96,
+            "alertas": []
+        },
+        "assistencia_social": {
+            "cad_unico": true,
+            "beneficio_ativo": true,
+            "alertas": []
+        },
+        "revisado": false,
+        "revisado_por": null,
+        "revisado_em": null
+    },
+    {
+        "id": "c023",
+        "nome": "Clara Albuquerque Reis",
+        "data_nascimento": "2022-01-06",
+        "bairro": "Jacarezinho",
+        "responsavel": "Fátima Reis",
+        "saude": {
+            "ultima_consulta": "2025-07-20",
+            "vacinas_em_dia": false,
+            "alertas": ["vacinas_atrasadas"]
+        },
+        "educacao": null,
+        "assistencia_social": {
+            "cad_unico": true,
+            "beneficio_ativo": true,
+            "alertas": []
+        },
+        "revisado": false,
+        "revisado_por": null,
+        "revisado_em": null
+    },
+    {
+        "id": "c024",
+        "nome": "Arthur Campos Rezende",
+        "data_nascimento": "2019-06-18",
+        "bairro": "Complexo do Alemão",
+        "responsavel": "Priscila Rezende",
+        "saude": {
+            "ultima_consulta": "2026-02-22",
+            "vacinas_em_dia": true,
+            "alertas": []
+        },
+        "educacao": {
+            "escola": "CIEP 208 Paulo Sarasate",
+            "frequencia_percent": 82,
+            "alertas": []
+        },
+        "assistencia_social": {
+            "cad_unico": true,
+            "beneficio_ativo": true,
+            "alertas": []
+        },
+        "revisado": false,
+        "revisado_por": null,
+        "revisado_em": null
+    },
+    {
+        "id": "c025",
+        "nome": "Valentina Cruz Nogueira",
+        "data_nascimento": "2020-10-30",
+        "bairro": "Mangueira",
+        "responsavel": "Heloísa Nogueira",
+        "saude": {
+            "ultima_consulta": "2024-05-09",
+            "vacinas_em_dia": false,
+            "alertas": ["vacinas_atrasadas", "consulta_atrasada"]
+        },
+        "educacao": {
+            "escola": "EM Silveira Sampaio",
+            "frequencia_percent": 48,
+            "alertas": ["frequencia_baixa"]
+        },
+        "assistencia_social": {
+            "cad_unico": false,
+            "beneficio_ativo": false,
+            "alertas": ["cadastro_desatualizado", "beneficio_suspenso"]
+        },
+        "revisado": false,
+        "revisado_por": null,
+        "revisado_em": null
+    }
+]
