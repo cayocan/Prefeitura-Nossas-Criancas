@@ -16,5 +16,8 @@ RUN npm install --unsafe-perm --loglevel=warn
 
 COPY . .
 
+# Strip BOM and CRLF from entrypoint.sh in case it was edited on Windows
+RUN sed -i '1s/^\xEF\xBB\xBF//' entrypoint.sh && sed -i 's/\r//' entrypoint.sh
+
 EXPOSE 3001
 CMD ["sh", "entrypoint.sh"]
