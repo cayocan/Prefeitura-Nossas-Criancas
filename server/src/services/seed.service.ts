@@ -3,7 +3,7 @@ import path from 'path';
 import { pool } from '../lib/database';
 import { ChildSchema } from '../schemas/child.schema';
 import { UserSchema } from '../schemas/user.schema';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 
 export async function runSeed() {
     const seedPath = path.resolve(__dirname, '../../data/seed.json');
