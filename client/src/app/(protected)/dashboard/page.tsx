@@ -1,4 +1,6 @@
 import { apiGet } from "@/lib/api";
+import type { ChartsData } from "@/lib/types";
+import { ChartsSection } from "@/components/dashboard/charts-section";
 import {
     Users,
     ClipboardCheck,
@@ -70,6 +72,7 @@ function SummaryCard({
 
 export default async function DashboardPage() {
     let summary: Summary;
+    let charts: ChartsData | null = null;
 
     try {
         summary = await apiGet<Summary>("/children/summary");
@@ -86,7 +89,11 @@ export default async function DashboardPage() {
             </div>
         );
     }
-
+    try {
+        charts = await apiGet<ChartsData>("/children/charts");
+    } catch {
+        // charts opcionais — falha silenciosa
+    }
     const pct =
         summary.total > 0
             ? Math.round((summary.revisados / summary.total) * 100)
@@ -140,6 +147,8 @@ export default async function DashboardPage() {
                     <SummaryCard key={card.label} {...card} />
                 ))}
             </div>
+
+            {charts && <ChartsSection data={charts} />}
         </div>
     );
 }

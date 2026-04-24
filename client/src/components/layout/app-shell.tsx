@@ -104,7 +104,7 @@ export function AppShell({ children, userEmail }: AppShellProps) {
     );
 
     return (
-        <div className="flex min-h-screen bg-background">
+        <div className="flex h-screen overflow-hidden bg-background">
             <InactivityWatcher />
 
             {/* ── Desktop sidebar ─────────────────────────────────────── */}
@@ -163,7 +163,7 @@ export function AppShell({ children, userEmail }: AppShellProps) {
                     <ThemeToggle />
                 </header>
 
-                <main className="flex-1 overflow-auto p-4 md:p-6 lg:p-8">
+                <main className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8">
                     {children}
                 </main>
             </div>

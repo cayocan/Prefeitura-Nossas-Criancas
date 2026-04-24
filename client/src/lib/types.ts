@@ -38,3 +38,10 @@ export type ListParams = {
     page?: number
     limit?: number
 }
+
+export type ChartsData = {
+    revisao: { revisados: number; pendentes: number }
+    alertas: Array<{ categoria: string; total: number }>
+    cobertura: Array<{ categoria: string; com_dados: number; sem_dados: number }>
+    por_bairro: Array<{ bairro: string; total: number; revisados: number; com_alertas: number }>
+}
