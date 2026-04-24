@@ -1,7 +1,7 @@
 {
-    "name": "prefeitura-nossas-criancas",
+    "name": "prefeitura-rj-nossas-criancas-api",
     "version": "1.0.0",
-    "description": "Backend for the fullstack code challenge",
+    "description": "API REST do painel Nossas Crianças — Prefeitura do Rio de Janeiro",
     "main": "src/server.ts",
     "scripts": {
         "dev": "tsx watch src/server.ts",
@@ -10,9 +10,14 @@
         "test": "vitest",
         "test:ci": "vitest run --reporter=verbose"
     },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
+    "keywords": [
+        "fastify",
+        "api",
+        "prefeitura-rio",
+        "nossas-criancas"
+    ],
+    "author": "Prefeitura do Rio de Janeiro",
+    "license": "MIT",
     "dependencies": {
         "@fastify/cors": "^10.0.1",
         "@fastify/jwt": "^10.0.0",
