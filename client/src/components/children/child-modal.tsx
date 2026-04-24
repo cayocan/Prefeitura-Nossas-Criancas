@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState, useTransition } from "react";
 import type { Child } from "@/lib/types";
 import {
     X,
@@ -12,12 +12,15 @@ import {
     HandHeart,
     AlertTriangle,
     User,
+    Loader2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { reviewChildAction } from "@/lib/auth";
 
 interface Props {
     child: Child;
     onClose: () => void;
+    onReview?: (id: string, revisado_por: string, revisado_em: string) => void;
 }
 
 function age(dob: string) {
@@ -76,9 +79,30 @@ function AlertsList({ alertas }: { alertas: string[] }) {
     );
 }
 
-export function ChildModal({ child, onClose }: Props) {
+export function ChildModal({ child, onClose, onReview }: Props) {
+    const [revisado, setRevisado] = useState(child.revisado);
+    const [revisadoPor, setRevisadoPor] = useState(child.revisado_por ?? null);
+    const [revisadoEm, setRevisadoEm] = useState(child.revisado_em ?? null);
+    const [error, setError] = useState<string | null>(null);
+    const [isPending, startTransition] = useTransition();
+
     const incomplete =
         !child.saude || !child.educacao || !child.assistencia_social;
+
+    function handleReview() {
+        setError(null);
+        startTransition(async () => {
+            const result = await reviewChildAction(child.id);
+            if (result.ok && result.revisado_por && result.revisado_em) {
+                setRevisado(true);
+                setRevisadoPor(result.revisado_por);
+                setRevisadoEm(result.revisado_em);
+                onReview?.(child.id, result.revisado_por, result.revisado_em);
+            } else {
+                setError(result.error ?? "Erro ao revisar.");
+            }
+        });
+    }
 
     // Fechar com Escape
     useEffect(() => {
@@ -147,7 +171,7 @@ export function ChildModal({ child, onClose }: Props) {
                         <Row
                             label="Status"
                             value={
-                                child.revisado ? (
+                                revisado ? (
                                     <span className="inline-flex items-center gap-1 text-secondary-foreground">
                                         <CheckCircle2 className="h-3 w-3" />{" "}
                                         Revisado
@@ -159,16 +183,13 @@ export function ChildModal({ child, onClose }: Props) {
                                 )
                             }
                         />
-                        {child.revisado_por && (
-                            <Row
-                                label="Revisado por"
-                                value={child.revisado_por}
-                            />
+                        {revisadoPor && (
+                            <Row label="Revisado por" value={revisadoPor} />
                         )}
-                        {child.revisado_em && (
+                        {revisadoEm && (
                             <Row
                                 label="Data revisão"
-                                value={formatDate(child.revisado_em)}
+                                value={formatDate(revisadoEm)}
                             />
                         )}
                     </section>
@@ -276,10 +297,34 @@ export function ChildModal({ child, onClose }: Props) {
                 </div>
 
                 {/* Footer */}
-                <div className="border-t border-border bg-card px-4 py-2.5 pb-safe-add-3 md:pb-2.5 flex justify-end md:rounded-b-2xl shrink-0">
-                    <Button variant="outline" size="sm" onClick={onClose}>
-                        Fechar
-                    </Button>
+                <div className="border-t border-border bg-card px-4 py-2.5 pb-safe-add-3 md:pb-2.5 flex items-center justify-between gap-2 md:rounded-b-2xl shrink-0">
+                    <div className="min-w-0">
+                        {error && (
+                            <p className="text-xs text-destructive truncate">
+                                {error}
+                            </p>
+                        )}
+                    </div>
+                    <div className="flex items-center gap-2 shrink-0">
+                        {!revisado && (
+                            <Button
+                                size="sm"
+                                onClick={handleReview}
+                                disabled={isPending}
+                                className="gap-1.5"
+                            >
+                                {isPending ? (
+                                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                                ) : (
+                                    <CheckCircle2 className="h-3.5 w-3.5" />
+                                )}
+                                Revisar
+                            </Button>
+                        )}
+                        <Button variant="outline" size="sm" onClick={onClose}>
+                            Fechar
+                        </Button>
+                    </div>
                 </div>
             </div>
         </div>

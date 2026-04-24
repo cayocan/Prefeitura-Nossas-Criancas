@@ -176,9 +176,29 @@ function ChildRow({ child, onClick }: { child: Child; onClick: () => void }) {
 
 // ── Main component ────────────────────────────────────────────────────────────
 export function ChildrenTable({ children }: { children: Child[] }) {
+    const [list, setList] = useState(children);
     const [selected, setSelected] = useState<Child | null>(null);
 
-    if (children.length === 0) {
+    function handleReview(
+        id: string,
+        revisado_por: string,
+        revisado_em: string,
+    ) {
+        setList((prev) =>
+            prev.map((c) =>
+                c.id === id
+                    ? { ...c, revisado: true, revisado_por, revisado_em }
+                    : c,
+            ),
+        );
+        setSelected((prev) =>
+            prev?.id === id
+                ? { ...prev, revisado: true, revisado_por, revisado_em }
+                : prev,
+        );
+    }
+
+    if (list.length === 0) {
         return (
             <div className="flex flex-col items-center justify-center gap-2 rounded-xl border border-border bg-card py-16 text-center">
                 <p className="text-sm font-medium text-muted-foreground">
@@ -197,12 +217,13 @@ export function ChildrenTable({ children }: { children: Child[] }) {
                 <ChildModal
                     child={selected}
                     onClose={() => setSelected(null)}
+                    onReview={handleReview}
                 />
             )}
 
             {/* Mobile: cards */}
             <div className="flex flex-col gap-2 md:hidden">
-                {children.map((c) => (
+                {list.map((c) => (
                     <ChildCard
                         key={c.id}
                         child={c}
@@ -237,7 +258,7 @@ export function ChildrenTable({ children }: { children: Child[] }) {
                         </tr>
                     </thead>
                     <tbody>
-                        {children.map((c) => (
+                        {list.map((c) => (
                             <ChildRow
                                 key={c.id}
                                 child={c}

@@ -289,6 +289,8 @@ const childrenPlugin: FastifyPluginAsync = async (fastify) => {
                     properties: {
                         ok: { type: 'boolean' },
                         id: { type: 'string' },
+                        revisado_por: { type: 'string' },
+                        revisado_em: { type: 'string' },
                     },
                 },
                 404: ErrorSchema,
@@ -302,14 +304,15 @@ const childrenPlugin: FastifyPluginAsync = async (fastify) => {
             `UPDATE children
             SET revisado = true, revisado_por = $1, revisado_em = now()
             WHERE id = $2
-            RETURNING id`,
+            RETURNING id, revisado_por, revisado_em`,
             [preferred_username, id]
         );
 
         if (result.rowCount === 0) {
             return reply.status(404).send({ error: MSG.children.naoEncontrada });
         }
-        return reply.send({ ok: true, id });
+        const row = result.rows[0];
+        return reply.send({ ok: true, id: row.id, revisado_por: row.revisado_por, revisado_em: row.revisado_em });
     });
 
 };
