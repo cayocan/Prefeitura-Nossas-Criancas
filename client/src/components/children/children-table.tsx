@@ -1,5 +1,9 @@
+"use client";
+
+import { useState } from "react";
 import type { Child } from "@/lib/types";
 import { AlertTriangle, CheckCircle2, Clock, FileWarning } from "lucide-react";
+import { ChildModal } from "./child-modal";
 
 function allAlerts(child: Child) {
     const items: { label: string; text: string }[] = [];
@@ -78,11 +82,17 @@ function alertCount(child: Child) {
 }
 
 // ── Mobile card ───────────────────────────────────────────────────────────────
-function ChildCard({ child }: { child: Child }) {
+function ChildCard({ child, onClick }: { child: Child; onClick: () => void }) {
     const alerts = alertCount(child);
     const incomplete = isIncomplete(child);
     return (
-        <div className="rounded-lg border border-border bg-card p-3.5 space-y-2">
+        <div
+            role="button"
+            tabIndex={0}
+            onClick={onClick}
+            onKeyDown={(e) => e.key === "Enter" && onClick()}
+            className="rounded-lg border border-border bg-card p-3.5 space-y-2 cursor-pointer hover:bg-muted/40 transition-colors"
+        >
             <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">
                     <div className="flex items-center gap-1.5 flex-wrap">
@@ -118,11 +128,16 @@ function ChildCard({ child }: { child: Child }) {
 }
 
 // ── Desktop table ─────────────────────────────────────────────────────────────
-function ChildRow({ child }: { child: Child }) {
+function ChildRow({ child, onClick }: { child: Child; onClick: () => void }) {
     const alerts = alertCount(child);
     const incomplete = isIncomplete(child);
     return (
-        <tr className="border-b border-border hover:bg-muted/40 transition-colors">
+        <tr
+            onClick={onClick}
+            onKeyDown={(e) => e.key === "Enter" && onClick()}
+            tabIndex={0}
+            className="border-b border-border hover:bg-muted/40 transition-colors cursor-pointer focus-visible:outline-none focus-visible:bg-muted/40"
+        >
             <td className="py-3 pl-4 pr-2">
                 <span className="font-medium text-sm">{child.nome}</span>
                 {incomplete && (
@@ -161,6 +176,8 @@ function ChildRow({ child }: { child: Child }) {
 
 // ── Main component ────────────────────────────────────────────────────────────
 export function ChildrenTable({ children }: { children: Child[] }) {
+    const [selected, setSelected] = useState<Child | null>(null);
+
     if (children.length === 0) {
         return (
             <div className="flex flex-col items-center justify-center gap-2 rounded-xl border border-border bg-card py-16 text-center">
@@ -176,10 +193,21 @@ export function ChildrenTable({ children }: { children: Child[] }) {
 
     return (
         <>
+            {selected && (
+                <ChildModal
+                    child={selected}
+                    onClose={() => setSelected(null)}
+                />
+            )}
+
             {/* Mobile: cards */}
             <div className="flex flex-col gap-2 md:hidden">
                 {children.map((c) => (
-                    <ChildCard key={c.id} child={c} />
+                    <ChildCard
+                        key={c.id}
+                        child={c}
+                        onClick={() => setSelected(c)}
+                    />
                 ))}
             </div>
 
@@ -210,7 +238,11 @@ export function ChildrenTable({ children }: { children: Child[] }) {
                     </thead>
                     <tbody>
                         {children.map((c) => (
-                            <ChildRow key={c.id} child={c} />
+                            <ChildRow
+                                key={c.id}
+                                child={c}
+                                onClick={() => setSelected(c)}
+                            />
                         ))}
                     </tbody>
                 </table>

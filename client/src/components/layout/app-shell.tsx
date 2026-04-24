@@ -1,18 +1,18 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { LayoutDashboard, Users, X, Menu, LogOut } from 'lucide-react'
-import { ThemeToggle } from '@/components/ui/theme-toggle'
-import { InactivityWatcher } from '@/components/providers/inactivity-watcher'
-import { logoutAction } from '@/lib/auth'
-import { cn } from '@/lib/utils'
+import { useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { LayoutDashboard, Users, X, Menu, LogOut } from "lucide-react";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { InactivityWatcher } from "@/components/providers/inactivity-watcher";
+import { logoutAction } from "@/lib/auth";
+import { cn } from "@/lib/utils";
 
 const NAV_ITEMS = [
-    { label: 'Visão Geral', href: '/dashboard', icon: LayoutDashboard },
-    { label: 'Crianças', href: '/criancas', icon: Users },
-] as const
+    { label: "Visão Geral", href: "/dashboard", icon: LayoutDashboard },
+    { label: "Crianças", href: "/criancas", icon: Users },
+] as const;
 
 // ── Shared sub-components ─────────────────────────────────────────────────────
 
@@ -20,43 +20,46 @@ function SidebarNavLinks({
     pathname,
     onNavigate,
 }: {
-    pathname: string
-    onNavigate?: () => void
+    pathname: string;
+    onNavigate?: () => void;
 }) {
     return (
         <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
             {NAV_ITEMS.map((item) => {
                 const isActive =
-                    pathname === item.href || pathname.startsWith(item.href + '/')
+                    pathname === item.href ||
+                    pathname.startsWith(item.href + "/");
                 return (
                     <Link
                         key={item.href}
                         href={item.href}
                         onClick={onNavigate}
                         className={cn(
-                            'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors',
+                            "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
                             isActive
-                                ? 'bg-sidebar-accent text-sidebar-accent-foreground'
-                                : 'text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground',
+                                ? "bg-sidebar-accent text-sidebar-accent-foreground"
+                                : "text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground",
                         )}
                     >
                         <item.icon className="h-4 w-4 shrink-0" />
                         {item.label}
                     </Link>
-                )
+                );
             })}
         </nav>
-    )
+    );
 }
 
 function SidebarFooter({ userEmail }: { userEmail?: string }) {
     return (
-        <div className="shrink-0 border-t border-sidebar-border px-3 pb-4 pt-3 space-y-1">
+        <div className="shrink-0 border-t border-sidebar-border px-3 pb-4 pb-safe pt-3 space-y-1">
             {userEmail && (
-                <p className="px-3 text-xs text-sidebar-foreground/50 truncate">{userEmail}</p>
+                <p className="px-3 text-xs text-sidebar-foreground/50 truncate">
+                    {userEmail}
+                </p>
             )}
             <div className="flex items-center gap-1">
-                <ThemeToggle />
+                <ThemeToggle className="text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground" />
                 <form action={logoutAction} className="flex-1">
                     <button
                         type="submit"
@@ -68,34 +71,37 @@ function SidebarFooter({ userEmail }: { userEmail?: string }) {
                 </form>
             </div>
         </div>
-    )
+    );
 }
 
 function SidebarBrand() {
     return (
         <div className="flex flex-col leading-tight">
-            <span className="text-sm font-bold text-sidebar-foreground">Nossas Crianças</span>
+            <span className="text-sm font-bold text-sidebar-foreground">
+                Nossas Crianças
+            </span>
             <span className="text-[10px] uppercase tracking-wider text-sidebar-foreground/50">
                 Prefeitura-RJ
             </span>
         </div>
-    )
+    );
 }
 
 // ── AppShell ──────────────────────────────────────────────────────────────────
 
 interface AppShellProps {
-    children: React.ReactNode
-    userEmail?: string
+    children: React.ReactNode;
+    userEmail?: string;
 }
 
 export function AppShell({ children, userEmail }: AppShellProps) {
-    const [drawerOpen, setDrawerOpen] = useState(false)
-    const pathname = usePathname()
+    const [drawerOpen, setDrawerOpen] = useState(false);
+    const pathname = usePathname();
 
     const currentPage = NAV_ITEMS.find(
-        (item) => pathname === item.href || pathname.startsWith(item.href + '/'),
-    )
+        (item) =>
+            pathname === item.href || pathname.startsWith(item.href + "/"),
+    );
 
     return (
         <div className="flex min-h-screen bg-background">
@@ -143,7 +149,7 @@ export function AppShell({ children, userEmail }: AppShellProps) {
             {/* ── Main area ───────────────────────────────────────────── */}
             <div className="flex min-w-0 flex-1 flex-col">
                 {/* Mobile top bar */}
-                <header className="flex h-14 shrink-0 items-center gap-3 border-b border-border bg-card px-4 md:hidden">
+                <header className="flex h-14 shrink-0 items-center gap-3 border-b border-border bg-card px-4 pt-safe-add-3 md:pt-0 md:hidden">
                     <button
                         onClick={() => setDrawerOpen(true)}
                         className="rounded-md p-1.5 text-foreground hover:bg-muted"
@@ -152,7 +158,7 @@ export function AppShell({ children, userEmail }: AppShellProps) {
                         <Menu className="h-5 w-5" />
                     </button>
                     <span className="flex-1 truncate text-sm font-semibold">
-                        {currentPage?.label ?? 'Painel'}
+                        {currentPage?.label ?? "Painel"}
                     </span>
                     <ThemeToggle />
                 </header>
@@ -162,5 +168,5 @@ export function AppShell({ children, userEmail }: AppShellProps) {
                 </main>
             </div>
         </div>
-    )
+    );
 }

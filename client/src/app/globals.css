@@ -2,6 +2,35 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+/* Safe area utilities — somam o inset ao padding existente via calc() */
+@layer utilities {
+    .pt-safe {
+        padding-top: env(safe-area-inset-top, 0px);
+    }
+    .pb-safe {
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+    .pl-safe {
+        padding-left: env(safe-area-inset-left, 0px);
+    }
+    .pr-safe {
+        padding-right: env(safe-area-inset-right, 0px);
+    }
+    /* Variantes "add" — somam o inset a um padding base existente */
+    .pt-safe-add-3 {
+        padding-top: calc(env(safe-area-inset-top, 0px) + 0.75rem);
+    }
+    .pb-safe-add-3 {
+        padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 0.75rem);
+    }
+    .mt-safe {
+        margin-top: env(safe-area-inset-top, 0px);
+    }
+    .mb-safe {
+        margin-bottom: env(safe-area-inset-bottom, 0px);
+    }
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
