@@ -1,4 +1,4 @@
-#!/bin/sh
+﻿#!/bin/sh
 set -e
 
 echo ""
@@ -11,7 +11,7 @@ npm run test:ci
 
 echo ""
 echo "========================================="
-echo "  Tests passed — starting server..."
+echo "  Tests passed â€” starting server..."
 echo "========================================="
 echo ""
 
