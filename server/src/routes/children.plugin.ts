@@ -123,6 +123,110 @@ const childrenPlugin: FastifyPluginAsync = async (fastify) => {
 
     fastify.addHook('onRequest', fastify.authenticate);
 
+    // GET /children/charts
+    fastify.get('/charts', {
+        schema: {
+            tags: ['children'],
+            summary: 'Dados agregados para visualizações do painel',
+            security: BEARER_AUTH,
+            response: {
+                200: {
+                    type: 'object',
+                    properties: {
+                        revisao: {
+                            type: 'object',
+                            properties: {
+                                revisados: { type: 'integer' },
+                                pendentes: { type: 'integer' },
+                            },
+                        },
+                        alertas: {
+                            type: 'array',
+                            items: {
+                                type: 'object',
+                                properties: {
+                                    categoria: { type: 'string' },
+                                    total: { type: 'integer' },
+                                },
+                            },
+                        },
+                        cobertura: {
+                            type: 'array',
+                            items: {
+                                type: 'object',
+                                properties: {
+                                    categoria: { type: 'string' },
+                                    com_dados: { type: 'integer' },
+                                    sem_dados: { type: 'integer' },
+                                },
+                            },
+                        },
+                        por_bairro: {
+                            type: 'array',
+                            items: {
+                                type: 'object',
+                                properties: {
+                                    bairro: { type: 'string' },
+                                    total: { type: 'integer' },
+                                    revisados: { type: 'integer' },
+                                    com_alertas: { type: 'integer' },
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+        },
+    }, async (_request, reply) => {
+        const [statsResult, bairrosResult] = await Promise.all([
+            pool.query(`
+                SELECT
+                    SUM(CASE WHEN c.revisado       THEN 1 ELSE 0 END)::int                                    AS revisados,
+                    SUM(CASE WHEN NOT c.revisado   THEN 1 ELSE 0 END)::int                                    AS pendentes,
+                    SUM(CASE WHEN COALESCE(jsonb_array_length(s.alertas), 0) > 0 THEN 1 ELSE 0 END)::int      AS alertas_saude,
+                    SUM(CASE WHEN COALESCE(jsonb_array_length(e.alertas), 0) > 0 THEN 1 ELSE 0 END)::int      AS alertas_educacao,
+                    SUM(CASE WHEN COALESCE(jsonb_array_length(a.alertas), 0) > 0 THEN 1 ELSE 0 END)::int      AS alertas_assistencia,
+                    SUM(CASE WHEN s.child_id IS NOT NULL THEN 1 ELSE 0 END)::int                              AS com_saude,
+                    SUM(CASE WHEN s.child_id IS NULL     THEN 1 ELSE 0 END)::int                              AS sem_saude,
+                    SUM(CASE WHEN e.child_id IS NOT NULL THEN 1 ELSE 0 END)::int                              AS com_educacao,
+                    SUM(CASE WHEN e.child_id IS NULL     THEN 1 ELSE 0 END)::int                              AS sem_educacao,
+                    SUM(CASE WHEN a.child_id IS NOT NULL THEN 1 ELSE 0 END)::int                              AS com_assistencia,
+                    SUM(CASE WHEN a.child_id IS NULL     THEN 1 ELSE 0 END)::int                              AS sem_assistencia
+                ${CHILDREN_JOINS}
+            `),
+            pool.query(`
+                SELECT
+                    c.bairro,
+                    COUNT(*)::int AS total,
+                    SUM(CASE WHEN c.revisado THEN 1 ELSE 0 END)::int AS revisados,
+                    SUM(CASE WHEN
+                        COALESCE(jsonb_array_length(s.alertas), 0) > 0 OR
+                        COALESCE(jsonb_array_length(e.alertas), 0) > 0 OR
+                        COALESCE(jsonb_array_length(a.alertas), 0) > 0
+                    THEN 1 ELSE 0 END)::int AS com_alertas
+                ${CHILDREN_JOINS}
+                GROUP BY c.bairro
+                ORDER BY total DESC
+            `),
+        ]);
+
+        const s = statsResult.rows[0];
+        return reply.send({
+            revisao: { revisados: s.revisados, pendentes: s.pendentes },
+            alertas: [
+                { categoria: 'Saúde', total: s.alertas_saude },
+                { categoria: 'Educação', total: s.alertas_educacao },
+                { categoria: 'Assistência', total: s.alertas_assistencia },
+            ],
+            cobertura: [
+                { categoria: 'Saúde', com_dados: s.com_saude, sem_dados: s.sem_saude },
+                { categoria: 'Educação', com_dados: s.com_educacao, sem_dados: s.sem_educacao },
+                { categoria: 'Assistência', com_dados: s.com_assistencia, sem_dados: s.sem_assistencia },
+            ],
+            por_bairro: bairrosResult.rows,
+        });
+    });
+
     // GET /children/summary
     fastify.get('/summary', {
         schema: {
@@ -195,8 +299,8 @@ const childrenPlugin: FastifyPluginAsync = async (fastify) => {
         const conditions: string[] = [];
 
         if (bairro) {
-            params.push(bairro);
-            conditions.push(`c.bairro = $${params.length}`);
+            params.push(`%${bairro}%`);
+            conditions.push(`c.bairro ILIKE $${params.length}`);
         }
         if (revisado !== undefined) {
             params.push(revisado === 'true');
@@ -289,6 +393,8 @@ const childrenPlugin: FastifyPluginAsync = async (fastify) => {
                     properties: {
                         ok: { type: 'boolean' },
                         id: { type: 'string' },
+                        revisado_por: { type: 'string' },
+                        revisado_em: { type: 'string' },
                     },
                 },
                 404: ErrorSchema,
@@ -302,14 +408,15 @@ const childrenPlugin: FastifyPluginAsync = async (fastify) => {
             `UPDATE children
             SET revisado = true, revisado_por = $1, revisado_em = now()
             WHERE id = $2
-            RETURNING id`,
+            RETURNING id, revisado_por, revisado_em`,
             [preferred_username, id]
         );
 
         if (result.rowCount === 0) {
             return reply.status(404).send({ error: MSG.children.naoEncontrada });
         }
-        return reply.send({ ok: true, id });
+        const row = result.rows[0];
+        return reply.send({ ok: true, id: row.id, revisado_por: row.revisado_por, revisado_em: row.revisado_em });
     });
 
 };
