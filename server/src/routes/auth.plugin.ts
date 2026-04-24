@@ -34,7 +34,7 @@ const authPlugin: FastifyPluginAsync = async (fastify) => {
                 }
 
                 const token = fastify.jwt.sign(
-                    { id: user.id, email: user.email, role: user.role, preferred_username: user.email },
+                    { id: user.id, role: user.role, preferred_username: user.email },
                     { expiresIn: '8h' }
                 );
                 return reply.send({ token });

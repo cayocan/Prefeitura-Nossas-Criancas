@@ -16,5 +16,8 @@ RUN npm install --unsafe-perm --loglevel=warn
 
 COPY . .
 
+# Normaliza line endings (CRLF → LF) caso o arquivo tenha sido criado no Windows
+RUN sed -i 's/\r$//' entrypoint.sh
+
 EXPOSE 3001
-CMD ["npm", "run", "dev"]
+CMD ["sh", "entrypoint.sh"]

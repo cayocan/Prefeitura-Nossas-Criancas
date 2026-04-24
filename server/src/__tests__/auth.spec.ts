@@ -38,7 +38,8 @@ describe('POST /auth/login', () => {
         expect(body).toHaveProperty('token');
 
         const decoded = await app.jwt.verify(body.token as string);
-        expect((decoded as any).email).toBe('tecnico@prefeitura.rio');
+        expect((decoded as any).preferred_username).toBe('tecnico@prefeitura.rio');
+        expect((decoded as any).email).toBeUndefined();
     });
 
     it('returns 401 when user not found', async () => {

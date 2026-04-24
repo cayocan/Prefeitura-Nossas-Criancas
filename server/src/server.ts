@@ -6,7 +6,9 @@ import swagger from '@fastify/swagger';
 import swaggerUi from '@fastify/swagger-ui';
 import { initDb, pool } from './lib/database';
 import { runSeed } from './services/seed.service';
+import authenticatePlugin from './plugins/authenticate.plugin';
 import authPlugin from './routes/auth.plugin';
+import childrenPlugin from './routes/children.plugin';
 
 //#region App
 
@@ -23,6 +25,15 @@ app.register(swagger, {
             description: 'API documentation for the Prefeitura-RJ Nossas Crianças project',
             version: '1.0.0',
         },
+        components: {
+            securitySchemes: {
+                bearerAuth: {
+                    type: 'http',
+                    scheme: 'bearer',
+                    bearerFormat: 'JWT',
+                },
+            },
+        },
     },
 });
 app.register(swaggerUi, { routePrefix: '/docs' });
@@ -38,6 +49,7 @@ if (!jwtSecret) {
     console.warn('JWT_SECRET not set — using insecure fallback for development.');
 }
 app.register(fastifyJwt, { secret: jwtSecret ?? 'dev-secret' });
+app.register(authenticatePlugin);
 
 //#endregion
 
@@ -45,6 +57,7 @@ app.register(fastifyJwt, { secret: jwtSecret ?? 'dev-secret' });
 
 app.get('/health', () => ({ status: 'ok' }));
 app.register(authPlugin, { prefix: '/auth' });
+app.register(childrenPlugin, { prefix: '/children' });
 
 //#endregion
 
