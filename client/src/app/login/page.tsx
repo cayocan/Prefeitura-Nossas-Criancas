@@ -23,7 +23,7 @@ export default function LoginPage() {
     const isInactivity = searchParams.get("reason") === "inatividade";
 
     return (
-        <div className="relative min-h-screen flex items-center justify-center bg-background px-4">
+        <div className="relative min-h-screen flex items-center justify-center bg-background px-4 py-8">
             <div className="absolute top-4 right-4">
                 <ThemeToggle />
             </div>
@@ -51,8 +51,8 @@ export default function LoginPage() {
                     <form action={action}>
                         <CardContent className="space-y-4">
                             {isInactivity && (
-                                <div className="flex items-center gap-2 rounded-md border border-amber-500/40 bg-amber-500/10 px-3 py-2 text-sm text-amber-700 dark:text-amber-400">
-                                    <Clock className="h-4 w-4 shrink-0" />
+                                <div className="flex items-start gap-2 rounded-md border border-amber-500/40 bg-amber-500/10 px-3 py-2 text-sm text-amber-700 dark:text-amber-400">
+                                    <Clock className="h-4 w-4 shrink-0 mt-0.5" />
                                     <span>
                                         Sua sessão expirou por inatividade. Faça
                                         login novamente.
@@ -61,8 +61,8 @@ export default function LoginPage() {
                             )}
 
                             {state?.error && (
-                                <div className="flex items-center gap-2 rounded-md border border-destructive/40 bg-destructive/10 px-3 py-2 text-sm text-destructive">
-                                    <AlertCircle className="h-4 w-4 shrink-0" />
+                                <div className="flex items-start gap-2 rounded-md border border-destructive/40 bg-destructive/10 px-3 py-2 text-sm text-destructive">
+                                    <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
                                     <span>{state.error}</span>
                                 </div>
                             )}
@@ -75,6 +75,7 @@ export default function LoginPage() {
                                     type="email"
                                     autoComplete="email"
                                     placeholder="voce@prefeitura.rio"
+                                    className="h-11 md:h-9"
                                     required
                                     disabled={isPending}
                                 />
@@ -88,6 +89,7 @@ export default function LoginPage() {
                                     type="password"
                                     autoComplete="current-password"
                                     placeholder="••••••••"
+                                    className="h-11 md:h-9"
                                     required
                                     disabled={isPending}
                                 />
@@ -97,7 +99,7 @@ export default function LoginPage() {
                         <CardFooter>
                             <Button
                                 type="submit"
-                                className="w-full"
+                                className="w-full h-11 md:h-9"
                                 disabled={isPending}
                             >
                                 {isPending ? (

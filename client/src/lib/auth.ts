@@ -62,3 +62,26 @@ export async function clearSessionAction(): Promise<void> {
     const cookieStore = await cookies()
     cookieStore.delete('auth-token')
 }
+
+/** Marca uma criança como revisada via PATCH /children/:id/review */
+export async function reviewChildAction(
+    id: string,
+): Promise<{ ok: boolean; revisado_por?: string; revisado_em?: string; error?: string }> {
+    const cookieStore = await cookies()
+    const token = cookieStore.get('auth-token')?.value ?? ''
+
+    try {
+        const res = await fetch(`${API_URL}/children/${id}/review`, {
+            method: 'PATCH',
+            headers: { Authorization: `Bearer ${token}` },
+        })
+        if (!res.ok) {
+            const body = await res.json().catch(() => ({}))
+            return { ok: false, error: (body as { error?: string }).error ?? 'Erro ao revisar.' }
+        }
+        const data = await res.json() as { ok: boolean; revisado_por: string; revisado_em: string }
+        return { ok: true, revisado_por: data.revisado_por, revisado_em: data.revisado_em }
+    } catch {
+        return { ok: false, error: 'Falha de conexão com o servidor.' }
+    }
+}

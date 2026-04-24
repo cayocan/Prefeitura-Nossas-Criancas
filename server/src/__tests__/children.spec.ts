@@ -159,8 +159,8 @@ describe('children endpoints', () => {
 
             expect(res.statusCode).toBe(200);
             const [sql, params] = (pool.query as any).mock.calls[0];
-            expect(sql).toContain('c.bairro =');
-            expect(params).toContain('Copacabana');
+            expect(sql).toContain('c.bairro ILIKE');
+            expect(params).toContain('%Copacabana%');
         });
 
         it('accepts filter: revisado=true', async () => {

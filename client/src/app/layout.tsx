@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import "./globals.css";
@@ -17,6 +17,10 @@ export const metadata: Metadata = {
     title: "Nossas Crianças — Prefeitura do Rio de Janeiro",
     description:
         "Painel de acompanhamento de crianças da rede municipal do Rio de Janeiro",
+};
+
+export const viewport: Viewport = {
+    viewportFit: "cover",
 };
 
 export default function RootLayout({
