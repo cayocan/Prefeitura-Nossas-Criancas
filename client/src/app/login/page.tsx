@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
+import { useSearchParams } from "next/navigation";
 import { loginAction } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,10 +15,12 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
-import { AlertCircle, Loader2 } from "lucide-react";
+import { AlertCircle, Clock, Loader2 } from "lucide-react";
 
 export default function LoginPage() {
     const [state, action, isPending] = useActionState(loginAction, null);
+    const searchParams = useSearchParams();
+    const isInactivity = searchParams.get("reason") === "inatividade";
 
     return (
         <div className="relative min-h-screen flex items-center justify-center bg-background px-4">
@@ -47,6 +50,16 @@ export default function LoginPage() {
 
                     <form action={action}>
                         <CardContent className="space-y-4">
+                            {isInactivity && (
+                                <div className="flex items-center gap-2 rounded-md border border-amber-500/40 bg-amber-500/10 px-3 py-2 text-sm text-amber-700 dark:text-amber-400">
+                                    <Clock className="h-4 w-4 shrink-0" />
+                                    <span>
+                                        Sua sessão expirou por inatividade. Faça
+                                        login novamente.
+                                    </span>
+                                </div>
+                            )}
+
                             {state?.error && (
                                 <div className="flex items-center gap-2 rounded-md border border-destructive/40 bg-destructive/10 px-3 py-2 text-sm text-destructive">
                                     <AlertCircle className="h-4 w-4 shrink-0" />

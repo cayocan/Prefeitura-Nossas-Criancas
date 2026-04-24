@@ -56,3 +56,9 @@ export async function logoutAction(): Promise<void> {
     cookieStore.delete('auth-token')
     redirect('/login')
 }
+
+/** Apaga o cookie sem redirecionar — usado pelo InactivityWatcher no cliente. */
+export async function clearSessionAction(): Promise<void> {
+    const cookieStore = await cookies()
+    cookieStore.delete('auth-token')
+}
