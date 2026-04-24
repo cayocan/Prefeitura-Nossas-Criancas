@@ -45,10 +45,21 @@ export async function initDb() {
         );
     `;
 
+    const createUsers = `
+        CREATE TABLE IF NOT EXISTS users (
+            id SERIAL PRIMARY KEY,
+            email TEXT NOT NULL UNIQUE,
+            password_hash TEXT NOT NULL,
+            role TEXT NOT NULL DEFAULT 'user',
+            created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+        );
+    `;
+
     await pool.query(createChildren);
     await pool.query(createSaude);
     await pool.query(createEducacao);
     await pool.query(createAssistencia);
+    await pool.query(createUsers);
 }
 
 export const query = (text: string, params?: any[]) => pool.query(text, params);
