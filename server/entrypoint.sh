@@ -11,7 +11,7 @@ npm run test:ci
 
 echo ""
 echo "========================================="
-echo "  Tests passed — starting server..."
+echo "  Tests passed ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â starting server..."
 echo "========================================="
 echo ""
 
