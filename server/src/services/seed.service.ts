@@ -89,8 +89,11 @@ export async function runSeed() {
         }
 
         // Ensure admin user exists (created/updated every seed run)
-        const adminEmail = 'tecnico@prefeitura.rio';
-        const adminPassword = 'painel@2024';
+        const adminEmail = process.env.ADMIN_EMAIL || 'tecnico@prefeitura.rio';
+        const adminPassword = process.env.ADMIN_PASSWORD;
+        if (!adminPassword) {
+            throw new Error('ADMIN_PASSWORD environment variable is not set');
+        }
         const userRes = await client.query('SELECT id FROM users WHERE email = $1', [adminEmail]);
         if (!userRes.rows || userRes.rows.length === 0) {
             UserSchema.parse({ email: adminEmail, password: adminPassword, role: 'admin' });

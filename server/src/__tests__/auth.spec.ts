@@ -11,6 +11,7 @@ import fastifyJwt from '@fastify/jwt';
 import authPlugin from '../routes/auth.plugin';
 import { pool } from '../lib/database';
 import bcrypt from 'bcryptjs';
+import { MSG } from '../lib/messages';
 
 describe('POST /auth/login', () => {
     let app: ReturnType<typeof fastify>;
@@ -44,6 +45,7 @@ describe('POST /auth/login', () => {
         (pool.query as any).mockResolvedValueOnce({ rows: [] });
         const res = await app.inject({ method: 'POST', url: '/auth/login', payload: { email: 'missing@x.com', password: 'x' } });
         expect(res.statusCode).toBe(401);
+        expect(JSON.parse(res.payload).error).toBe(MSG.auth.credenciaisInvalidas);
     });
 
     it('returns 401 for wrong password', async () => {
@@ -51,15 +53,18 @@ describe('POST /auth/login', () => {
         (pool.query as any).mockResolvedValueOnce({ rows: [{ id: 1, email: 'tecnico@prefeitura.rio', password_hash: badHash, role: 'admin' }] });
         const res = await app.inject({ method: 'POST', url: '/auth/login', payload: { email: 'tecnico@prefeitura.rio', password: 'painel@2024' } });
         expect(res.statusCode).toBe(401);
+        expect(JSON.parse(res.payload).error).toBe(MSG.auth.credenciaisInvalidas);
     });
 
     it('returns 400 for missing password', async () => {
         const res = await app.inject({ method: 'POST', url: '/auth/login', payload: { email: 'tecnico@prefeitura.rio' } });
         expect(res.statusCode).toBe(400);
+        expect(JSON.parse(res.payload).error).toBe(MSG.auth.requisicaoInvalida);
     });
 
     it('returns 400 for invalid email format', async () => {
         const res = await app.inject({ method: 'POST', url: '/auth/login', payload: { email: 'invalid', password: 'x' } });
         expect(res.statusCode).toBe(400);
+        expect(JSON.parse(res.payload).error).toBe(MSG.auth.requisicaoInvalida);
     });
 });

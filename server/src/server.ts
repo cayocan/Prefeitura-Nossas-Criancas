@@ -1,6 +1,7 @@
 import fastify from 'fastify';
 import cors from '@fastify/cors';
 import fastifyJwt from '@fastify/jwt';
+import rateLimit from '@fastify/rate-limit';
 import swagger from '@fastify/swagger';
 import swaggerUi from '@fastify/swagger-ui';
 import { initDb, pool } from './lib/database';
@@ -26,7 +27,8 @@ app.register(swagger, {
 });
 app.register(swaggerUi, { routePrefix: '/docs' });
 
-app.register(cors, { origin: '*' });
+app.register(cors, { origin: 'http://localhost:3000' });
+app.register(rateLimit, { max: 100, timeWindow: '1 minute' });
 
 const jwtSecret = process.env.JWT_SECRET;
 if (!jwtSecret) {
