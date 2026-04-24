@@ -48,7 +48,7 @@ function SummaryCard({
         >
             <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">
-                    <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide truncate">
+                    <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
                         {label}
                     </p>
                     <p className="mt-1.5 text-3xl font-bold tabular-nums leading-none">

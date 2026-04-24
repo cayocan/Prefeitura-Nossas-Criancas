@@ -195,8 +195,8 @@ const childrenPlugin: FastifyPluginAsync = async (fastify) => {
         const conditions: string[] = [];
 
         if (bairro) {
-            params.push(bairro);
-            conditions.push(`c.bairro = $${params.length}`);
+            params.push(`%${bairro}%`);
+            conditions.push(`c.bairro ILIKE $${params.length}`);
         }
         if (revisado !== undefined) {
             params.push(revisado === 'true');
