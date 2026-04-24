@@ -1,16 +1,55 @@
 import fastify from 'fastify';
 import cors from '@fastify/cors';
+import fastifyJwt from '@fastify/jwt';
+import rateLimit from '@fastify/rate-limit';
+import swagger from '@fastify/swagger';
+import swaggerUi from '@fastify/swagger-ui';
+import { initDb, pool } from './lib/database';
 import { runSeed } from './services/seed.service';
-import { initDb } from './lib/database';
+import authPlugin from './routes/auth.plugin';
+
+//#region App
 
 const app = fastify();
 
-app.register(cors, { origin: '*' });
+//#endregion
 
-// Run a health check endpoint for monitoring
+//#region Plugins
+
+app.register(swagger, {
+    openapi: {
+        info: {
+            title: 'API Documentation',
+            description: 'API documentation for the Prefeitura-RJ Nossas Crianças project',
+            version: '1.0.0',
+        },
+    },
+});
+app.register(swaggerUi, { routePrefix: '/docs' });
+
+app.register(cors, { origin: 'http://localhost:3000' });
+app.register(rateLimit, { max: 100, timeWindow: '1 minute' });
+
+const jwtSecret = process.env.JWT_SECRET;
+if (!jwtSecret) {
+    if (process.env.NODE_ENV === 'production') {
+        throw new Error('Missing JWT_SECRET environment variable in production');
+    }
+    console.warn('JWT_SECRET not set — using insecure fallback for development.');
+}
+app.register(fastifyJwt, { secret: jwtSecret ?? 'dev-secret' });
+
+//#endregion
+
+//#region Routes
+
 app.get('/health', () => ({ status: 'ok' }));
+app.register(authPlugin, { prefix: '/auth' });
 
-// Function that waits for the database to be ready and then runs the seeding process
+//#endregion
+
+//#region Database Initialization and Seeding
+
 async function waitForDbAndSeed(retries = 10, delayMs = 3000) {
     for (let i = 0; i < retries; i++) {
         try {
@@ -25,7 +64,10 @@ async function waitForDbAndSeed(retries = 10, delayMs = 3000) {
     throw new Error('Unable to initialize database after multiple attempts');
 }
 
-// Start the server after ensuring the database is ready and seeded
+//#endregion
+
+//#region Server Start
+
 async function start() {
     try {
         await waitForDbAndSeed();
@@ -38,3 +80,5 @@ async function start() {
 }
 
 start();
+
+//#endregion
