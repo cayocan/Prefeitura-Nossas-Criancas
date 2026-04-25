@@ -3,10 +3,15 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-const API_URL =
-    process.env.BACKEND_URL ??
-    process.env.NEXT_PUBLIC_API_URL ??
-    'http://localhost:3001'
+function normalizeUrl(raw: string | undefined): string {
+    const url = raw ?? 'http://localhost:3001'
+    if (/^https?:\/\//i.test(url)) return url.replace(/\/$/, '')
+    return `https://${url.replace(/\/$/, '')}`
+}
+
+const API_URL = normalizeUrl(
+    process.env.BACKEND_URL ?? process.env.NEXT_PUBLIC_API_URL,
+)
 
 export type LoginState = { error: string } | null
 
@@ -23,16 +28,16 @@ export async function loginAction(
 
     let res: Response
     try {
-        console.log('[loginAction] fetching', `${API_URL}/auth/login`)
+        console.log('[loginAction] POST', `${API_URL}/auth/login`)
         res = await fetch(`${API_URL}/auth/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password }),
         })
-        console.log('[loginAction] response status', res.status)
+        console.log('[loginAction] status', res.status)
     } catch (err) {
         console.error('[loginAction] fetch error', err)
-        return { error: `[debug] URL: ${API_URL} | erro: ${String(err)}` }
+        return { error: 'Não foi possível conectar ao servidor.' }
     }
 
     if (!res.ok) {
@@ -74,17 +79,20 @@ export async function reviewChildAction(
     const token = cookieStore.get('auth-token')?.value ?? ''
 
     try {
+        console.log('[reviewChildAction] PATCH', `${API_URL}/children/${id}/review`)
         const res = await fetch(`${API_URL}/children/${id}/review`, {
             method: 'PATCH',
             headers: { Authorization: `Bearer ${token}` },
         })
+        console.log('[reviewChildAction] status', res.status)
         if (!res.ok) {
             const body = await res.json().catch(() => ({}))
             return { ok: false, error: (body as { error?: string }).error ?? 'Erro ao revisar.' }
         }
         const data = await res.json() as { ok: boolean; revisado_por: string; revisado_em: string }
         return { ok: true, revisado_por: data.revisado_por, revisado_em: data.revisado_em }
-    } catch {
+    } catch (err) {
+        console.error('[reviewChildAction] fetch error', err)
         return { ok: false, error: 'Falha de conexão com o servidor.' }
     }
 }
