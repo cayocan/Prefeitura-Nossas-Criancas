@@ -16,8 +16,6 @@ RUN npm install --unsafe-perm --loglevel=warn
 
 COPY . .
 
-# Strip BOM and CRLF from entrypoint.sh in case it was edited on Windows
-RUN sed -i '1s/^\xEF\xBB\xBF//' entrypoint.sh && sed -i 's/\r//' entrypoint.sh
-
 EXPOSE 3001
-CMD ["sh", "entrypoint.sh"]
+# Strip BOM and CRLF at runtime (after bind-mount overwrites build-time fixes on Windows hosts)
+CMD ["sh", "-c", "sed -i '1s/^\\xEF\\xBB\\xBF//' entrypoint.sh && sed -i 's/\\r//' entrypoint.sh && exec sh entrypoint.sh"]

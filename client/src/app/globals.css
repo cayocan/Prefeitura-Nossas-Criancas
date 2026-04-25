@@ -129,45 +129,43 @@
 
 /* ─── Dark mode ──────────────────────────────────────────────── */
 .dark {
-    /* Cores brutas da paleta — dark */
-    --palette-1: oklch(0.77 0.06 74); /* #d1b68d — warm tan */
-    --palette-2: oklch(0.47 0.08 12); /* #87555c — wine */
-    --palette-3: oklch(0.27 0.07 310); /* #492d49 — deep purple */
-    --palette-4: oklch(0.34 0.06 295); /* #51445f — medium purple */
-    --palette-5: oklch(0.43 0.05 270); /* #5a5c75 — blue-gray */
-
-    /* Tokens semânticos */
-    --background: oklch(0.27 0.07 310);
-    --foreground: oklch(0.93 0.02 75);
-    --card: oklch(0.34 0.06 295);
-    --card-foreground: oklch(0.93 0.02 75);
-    --popover: oklch(0.34 0.06 295);
-    --popover-foreground: oklch(0.93 0.02 75);
-    --primary: oklch(0.77 0.06 74);
-    --primary-foreground: oklch(0.27 0.07 310);
-    --secondary: oklch(0.43 0.05 270);
-    --secondary-foreground: oklch(0.93 0.02 75);
-    --muted: oklch(0.34 0.06 295);
-    --muted-foreground: oklch(0.72 0.04 270);
-    --accent: oklch(0.47 0.08 12);
-    --accent-foreground: oklch(0.93 0.02 75);
-    --destructive: oklch(0.704 0.191 22.216);
-    --border: oklch(1 0 0 / 10%);
-    --input: oklch(1 0 0 / 15%);
-    --ring: oklch(0.77 0.06 74);
-    --chart-1: oklch(0.77 0.06 74);
-    --chart-2: oklch(0.47 0.08 12);
-    --chart-3: oklch(0.56 0.05 270);
-    --chart-4: oklch(0.43 0.05 270);
-    --chart-5: oklch(0.34 0.06 295);
-    --sidebar: oklch(0.3 0.07 305);
-    --sidebar-foreground: oklch(0.93 0.02 75);
-    --sidebar-primary: oklch(0.77 0.06 74);
-    --sidebar-primary-foreground: oklch(0.27 0.07 310);
-    --sidebar-accent: oklch(0.43 0.05 270);
-    --sidebar-accent-foreground: oklch(0.93 0.02 75);
-    --sidebar-border: oklch(1 0 0 / 10%);
-    --sidebar-ring: oklch(0.77 0.06 74);
+    --background: oklch(0.112 0 0); /* surface-a0  #121212 */
+    --foreground: oklch(0.766 0.049 75); /* primary-a50 #cab792 */
+    --card: oklch(0.215 0.012 75); /* tonal-a10   #302e28 */
+    --card-foreground: oklch(0.766 0.049 75); /* primary-a50 */
+    --popover: oklch(0.185 0 0); /* surface-a10 #252525 */
+    --popover-foreground: oklch(0.766 0.049 75); /* primary-a50 */
+    --primary: oklch(0.668 0.071 75); /* primary-a30 #b59b66 */
+    --primary-foreground: oklch(0.112 0 0); /* surface-a0  #121212 */
+    --secondary: oklch(0.295 0.01 75); /* tonal-a20   #43423c */
+    --secondary-foreground: oklch(0.766 0.049 75); /* primary-a50 */
+    --muted: oklch(0.275 0 0); /* surface-a20 #393939 */
+    --muted-foreground: oklch(0.566 0.007 75); /* tonal-a50   #858380 */
+    --accent: oklch(0.652 0.082 58); /* warning-a10 #ba945a */
+    --accent-foreground: oklch(0.112 0 0); /* surface-a0  #121212 */
+    --destructive: oklch(0.516 0.116 22); /* danger-a10  #b4544c */
+    --border: oklch(0.295 0.01 75); /* tonal-a20   #43423c */
+    --input: oklch(0.295 0.01 75); /* tonal-a20   #43423c */
+    --ring: oklch(0.668 0.071 75); /* primary-a30 #b59b66 */
+    --chart-1: oklch(0.668 0.071 75); /* primary-a30 — gold  */
+    --chart-2: oklch(0.573 0.102 163); /* success-a0  — teal  */
+    --chart-3: oklch(0.488 0.085 258); /* info-a10    — blue  */
+    --chart-4: oklch(0.565 0.104 58); /* warning-a0  — amber */
+    --chart-5: oklch(0.516 0.116 22); /* danger-a10  — red   */
+    --sidebar: oklch(0.143 0.012 75); /* tonal-a0    #1d1b15 */
+    --sidebar-foreground: oklch(0.766 0.049 75); /* primary-a50 */
+    --sidebar-primary: oklch(0.668 0.071 75); /* primary-a30 */
+    --sidebar-primary-foreground: oklch(0.112 0 0); /* surface-a0  */
+    --sidebar-accent: oklch(0.215 0.012 75); /* tonal-a10   #302e28 */
+    --sidebar-accent-foreground: oklch(0.766 0.049 75); /* primary-a50 */
+    --sidebar-border: oklch(0.215 0.012 75); /* tonal-a10   #302e28 */
+    --sidebar-ring: oklch(0.668 0.071 75); /* primary-a30 */
+    /* Paleta de projeto */
+    --palette-1: oklch(0.519 0.113 75); /* primary-a0  #967217 */
+    --palette-2: oklch(0.573 0.102 163); /* success-a0  #22946e */
+    --palette-3: oklch(0.565 0.104 58); /* warning-a0  #a87a2a */
+    --palette-4: oklch(0.516 0.116 22); /* danger-a10  #b4544c */
+    --palette-5: oklch(0.488 0.085 258); /* info-a10    #4b6ca2 */
 }
 
 @layer base {
