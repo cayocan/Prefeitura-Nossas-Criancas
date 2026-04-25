@@ -32,7 +32,7 @@ export async function loginAction(
         console.log('[loginAction] response status', res.status)
     } catch (err) {
         console.error('[loginAction] fetch error', err)
-        return { error: 'Não foi possível conectar ao servidor.' }
+        return { error: `[debug] URL: ${API_URL} | erro: ${String(err)}` }
     }
 
     if (!res.ok) {
