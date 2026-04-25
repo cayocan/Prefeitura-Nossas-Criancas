@@ -12,6 +12,7 @@ Painel web para acompanhamento de crianças em situação de vulnerabilidade soc
 - [Estrutura do projeto](#estrutura-do-projeto)
 - [Decisões arquiteturais e trade-offs](#decisões-arquiteturais-e-trade-offs)
 - [Diferenciais implementados](#diferenciais-implementados)
+- [Deploy em produção](#deploy-em-produção)
 - [Concessões de segurança — feitas intencionalmente para este desafio](#concessões-de-segurança--feitas-intencionalmente-para-este-desafio)
 - [O que faria diferente com mais tempo](#o-que-faria-diferente-com-mais-tempo)
 
@@ -195,6 +196,17 @@ Simples de implementar e suficiente para o volume atual (25 crianças no seed, c
 - **Rate limiting** — 100 req/min por IP via `@fastify/rate-limit`
 - **Auditoria de revisão** — `revisado_por` (e-mail do técnico via JWT) e `revisado_em` (timestamp do servidor) são gravados e exibidos no detalhe da criança
 - **InactivityWatcher** — logout automático por inatividade para terminais compartilhados
+
+---
+
+## Deploy em produção
+
+Arquitetura de produção:
+
+- **Backend + PostgreSQL** → [Railway](https://railway.app) (deploy via Docker + plugin de banco gerenciado)
+- **Frontend** → [Vercel](https://vercel.com) (detecção automática de Next.js, redeploy em push na `main`)
+
+Ambas as plataformas conectam ao GitHub e fazem redeploy automaticamente a cada push na branch `main`.
 
 ---
 

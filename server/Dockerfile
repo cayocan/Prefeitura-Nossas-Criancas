@@ -2,7 +2,6 @@ FROM node:20-slim
 
 WORKDIR /app
 
-# Install build dependencies for native modules
 RUN apt-get update && apt-get install -y --no-install-recommends \
 	build-essential \
 	python3 \
@@ -11,10 +10,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 COPY package*.json ./
-# Install node dependencies
 RUN npm install --unsafe-perm --loglevel=warn
 
 COPY . .
+
+# Compile TypeScript → dist/ (used in production via NODE_ENV=production)
+RUN npm run build
 
 EXPOSE 3001
 # Strip BOM and CRLF at runtime (after bind-mount overwrites build-time fixes on Windows hosts)

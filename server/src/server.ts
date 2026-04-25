@@ -38,7 +38,11 @@ app.register(swagger, {
 });
 app.register(swaggerUi, { routePrefix: '/docs' });
 
-app.register(cors, { origin: 'http://localhost:3000' });
+const corsOrigin = process.env.CORS_ORIGIN ?? 'http://localhost:3000';
+app.register(cors, {
+    origin: corsOrigin.split(',').map((o) => o.trim()),
+    credentials: true,
+});
 app.register(rateLimit, { max: 100, timeWindow: '1 minute' });
 
 const jwtSecret = process.env.JWT_SECRET;
