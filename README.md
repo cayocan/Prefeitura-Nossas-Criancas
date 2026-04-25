@@ -12,6 +12,7 @@ Painel web para acompanhamento de crianças em situação de vulnerabilidade soc
 - [Estrutura do projeto](#estrutura-do-projeto)
 - [Decisões arquiteturais e trade-offs](#decisões-arquiteturais-e-trade-offs)
 - [Diferenciais implementados](#diferenciais-implementados)
+- [Concessões de segurança — feitas intencionalmente para este desafio](#concessões-de-segurança--feitas-intencionalmente-para-este-desafio)
 - [O que faria diferente com mais tempo](#o-que-faria-diferente-com-mais-tempo)
 
 ---
@@ -194,6 +195,82 @@ Simples de implementar e suficiente para o volume atual (25 crianças no seed, c
 - **Rate limiting** — 100 req/min por IP via `@fastify/rate-limit`
 - **Auditoria de revisão** — `revisado_por` (e-mail do técnico via JWT) e `revisado_em` (timestamp do servidor) são gravados e exibidos no detalhe da criança
 - **InactivityWatcher** — logout automático por inatividade para terminais compartilhados
+
+---
+
+## Concessões de segurança — feitas intencionalmente para este desafio
+
+Esta seção documenta explicitamente os atalhos de segurança adotados para facilitar a avaliação do projeto. **Nenhum deles seria aceitável em produção real.**
+
+---
+
+### 1. `.env` commitado no repositório
+
+**O que foi feito:** o arquivo `.env` contém todas as credenciais reais e está versionado no Git. O `.gitignore` inclusive documenta essa escolha com um comentário.
+
+**Por que foi feito:** para que o avaliador consiga rodar `docker compose up --build` sem nenhuma configuração adicional.
+
+**Em produção:** `.env` nunca entra no repositório. Secrets seriam gerenciados via AWS Secrets Manager, GCP Secret Manager, Railway/Render environment variables, ou Kubernetes Secrets — nunca em texto plano no código-fonte.
+
+---
+
+### 2. `JWT_SECRET` fraco e exposto
+
+**O que foi feito:** `JWT_SECRET=dev-secret-change-in-production` está no `.env` commitado. Se a variável não for definida, o servidor usa o fallback `'dev-secret'` em desenvolvimento (com `console.warn`).
+
+**Por que foi feito:** simplifica a execução local sem configuração.
+
+**Em produção:** o secret seria uma string aleatória de pelo menos 256 bits (`openssl rand -base64 32`), armazenada exclusivamente no sistema de secrets, nunca no código. O fallback inseguro seria removido — `JWT_SECRET` ausente derrubaria o servidor mesmo em desenvolvimento.
+
+---
+
+### 3. `ADMIN_PASSWORD` e credenciais de banco em texto plano no repositório
+
+**O que foi feito:** `ADMIN_PASSWORD=painel@2024`, `POSTGRES_PASSWORD=pgpassword` e a `DATABASE_URL` completa com usuário e senha estão no `.env` versionado.
+
+**Por que foi feito:** mesma razão do item anterior — zero atrito para o avaliador rodar o projeto.
+
+**Em produção:** senhas de banco e do usuário administrador seriam geradas aleatoriamente, armazenadas em secrets manager e rotacionadas periodicamente. O seed nunca aceitaria `ADMIN_PASSWORD` de variável de ambiente diretamente — usaria um fluxo de criação de usuário separado com validação de força de senha.
+
+---
+
+### 4. Ausência de security headers (Helmet)
+
+**O que foi feito:** a API não define headers de segurança HTTP como `Content-Security-Policy`, `X-Frame-Options`, `X-Content-Type-Options`, `Strict-Transport-Security` ou `Permissions-Policy`.
+
+**Por que foi feito:** não era requisito do desafio e adicionaria configuração para o avaliador entender.
+
+**Em produção:** usaria `@fastify/helmet` com uma CSP restritiva. O frontend Next.js também precisaria de configuração de `headers()` no `next.config.ts`.
+
+---
+
+### 5. Comunicação via HTTP puro (sem TLS)
+
+**O que foi feito:** todos os serviços se comunicam em HTTP — frontend → backend e browser → frontend. O cookie `auth-token` tem `secure: false` em desenvolvimento.
+
+**Por que foi feito:** TLS local exigiria certificados autoassinados, adicionando complexidade desnecessária para a avaliação.
+
+**Em produção:** HTTPS obrigatório em todas as comunicações. O cookie teria `secure: true` e `__Secure-` prefix. O backend forçaria `HSTS`.
+
+---
+
+### 6. Ausência de refresh token
+
+**O que foi feito:** o JWT tem expiração fixa de 8 horas sem mecanismo de renovação. Quando expira, o usuário é redirecionado para o login.
+
+**Por que foi feito:** o desafio mencionava apenas que o frontend deveria redirecionar quando o JWT expirar, não que precisaria de refresh.
+
+**Em produção:** usaria um par access token (15 min) + refresh token (7 dias) com rotação automática e revogação (armazenando refresh tokens no banco com blacklist por logout).
+
+---
+
+### 7. Logs sem estruturação nem sanitização
+
+**O que foi feito:** o backend usa `console.log` e `console.error` diretamente, sem nível de log, sem formato estruturado (JSON) e sem redação de dados sensíveis.
+
+**Por que foi feito:** suficiente para desenvolvimento e avaliação.
+
+**Em produção:** usaria o logger nativo do Fastify (`fastify.log`) com nível configurável por ambiente, formato JSON para ingestão em sistemas como Datadog/CloudWatch, e sanitização para garantir que dados pessoais de crianças (LGPD) nunca apareçam em logs.
 
 ---
 
