@@ -185,7 +185,7 @@ Simples de implementar e suficiente para o volume atual (25 crianças no seed, c
 
 ## Diferenciais implementados
 
-- **Deploy público** — Vercel (frontend) + Railway ou Render (backend + PostgreSQL) em (LINK DO PROJETO DEPLOYADO).
+- **Deploy público** — Vercel (frontend) + Railway ou Render (backend + PostgreSQL) em https://prefeitura-nossas-criancas-qtk5qx3l5-cayocan-8668s-projects.vercel.app/.
 - **shadcn/ui** — componentes Button, Input, Label, Card com variantes customizadas
 - **Testes unitários no backend** — Vitest com mocks do pool do banco (`auth.spec.ts`, `children.spec.ts`)
 - **Visualizações de dados** — gráficos SVG puros (sem dependência client-side): donut de revisão, barras de alertas por categoria, cobertura de dados por seção e mapa de calor por bairro

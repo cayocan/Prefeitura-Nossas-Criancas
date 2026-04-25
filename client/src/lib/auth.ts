@@ -23,12 +23,15 @@ export async function loginAction(
 
     let res: Response
     try {
+        console.log('[loginAction] fetching', `${API_URL}/auth/login`)
         res = await fetch(`${API_URL}/auth/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password }),
         })
-    } catch {
+        console.log('[loginAction] response status', res.status)
+    } catch (err) {
+        console.error('[loginAction] fetch error', err)
         return { error: 'Não foi possível conectar ao servidor.' }
     }
 
