@@ -1,5 +1,10 @@
 # Painel Nossas Crianças — Prefeitura do Rio de Janeiro
 
+> 🔗 **[Acessar o projeto em produção →](https://prefeitura-nossas-criancas.vercel.app)**
+> Login: `tecnico@prefeitura.rio` / `painel@2024`
+
+---
+
 Painel web para acompanhamento de crianças em situação de vulnerabilidade social, cruzando informações de **saúde**, **educação** e **assistência social**. Permite que técnicos de campo identifiquem alertas ativos e registrem revisões de caso.
 
 ---
